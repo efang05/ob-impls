@@ -8,14 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(DEBUG_FLAGS -g -O0)
-set(RELEASE_FLAGS -O3 -DNDEBUG)
+set(RELEASE_FLAGS -O3 -march=native -flto -fno-exceptions -DNDEBUG)
 
 find_package(GTest REQUIRED)
 enable_testing()
 
 file(GLOB MAIN src/main.cpp)
 file(GLOB_RECURSE TESTS tst/*.cpp)
-file(GLOB_RECURSE HEADERS src/*.hpp)
+file(GLOB_RECURSE BENCH bench/*.cpp)
+file(GLOB_RECURSE HEADERS include/*.hpp)
 
 find_package(fmt REQUIRED)
 
@@ -24,6 +25,7 @@ SET(PACKAGES fmt::fmt)
 add_executable(main ${MAIN} ${HEADERS})
 add_executable(main_tests ${TESTS} ${HEADERS})
 add_executable(main_debug ${MAIN} ${HEADERS})
+add_executable(bench ${BENCH} ${HEADERS})
 
 SET(RELEASE_TARGETS main)
 SET(TEST_TARGETS main_tests)
